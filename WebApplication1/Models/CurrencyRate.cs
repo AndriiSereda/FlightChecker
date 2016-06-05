@@ -4,6 +4,8 @@ namespace WebApplication1.Models
 {
     public class CurrencyRate
     {
+        //test change
+
         public string FromCurrencyCode { get; set; }
         public decimal ExchangeRate { get; set; }
 
