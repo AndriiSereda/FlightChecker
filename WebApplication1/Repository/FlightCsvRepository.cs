@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using WebApplication1.Models;
+using FlightChecker.Models;
 
-namespace WebApplication1.Repository
+namespace FlightChecker.Repository
 {
-    public class FlightCsvRepository : CsvRepository, IRepository<Flight>, IFlightRepository
+    public class FlightCsvRepository : CsvRepository<Flight>, IRepository<Flight>, IFlightRepository
 
     {
         public FlightCsvRepository(string source) : base(source)
@@ -20,24 +20,17 @@ namespace WebApplication1.Repository
                 using (TextFieldParser parser = new TextFieldParser(_source))
                 {
                     parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(";");
-                    parser.ReadLine(); //skip meta
+                    parser.SetDelimiters(_delimiter);
+                    //get meta
+                    var properties = parser.ReadFields();
 
                     var result = new List<Flight>();
                     while (!parser.EndOfData)
                     {
                         //Process row
-                        string[] fields = parser.ReadFields();
+                        var fields = parser.ReadFields();
                         DateTime parsedDate;
-                        var item = new Flight
-                        {
-                            Origin = fields[0],
-                            Destination = fields[1],
-                            OutboundDate = DateTime.Parse(fields[2]),
-                            InboundDate = DateTime.TryParse(fields[3], out parsedDate) ? parsedDate : (DateTime?)null,
-                            Price = Decimal.Parse(fields[4])
-                        };
-
+                        var item = this.GiveMeAnObject(properties, fields);
                         if ((item.Origin == origin)&&(item.Destination == destination))
                         {
                             result.Add(item);

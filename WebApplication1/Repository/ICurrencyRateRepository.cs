@@ -1,6 +1,6 @@
-﻿using WebApplication1.Models;
+﻿using FlightChecker.Models;
 
-namespace WebApplication1.Repository
+namespace FlightChecker.Repository
 {
     interface ICurrencyRateRepository
     {

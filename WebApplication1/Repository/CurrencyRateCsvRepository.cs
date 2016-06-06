@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication1.Models;
+using FlightChecker.Models;
 
-namespace WebApplication1.Repository
+namespace FlightChecker.Repository
 {
-    public class CurrencyRateCsvRepository : CsvRepository, IRepository<CurrencyRate>, ICurrencyRateRepository
+    public class CurrencyRateCsvRepository : CsvRepository<CurrencyRate>, IRepository<CurrencyRate>, ICurrencyRateRepository
     {
         private string _toCurrency;
 
@@ -27,19 +27,15 @@ namespace WebApplication1.Repository
                 using (TextFieldParser parser = new TextFieldParser(_source))
                 {
                     parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(";");
-                    parser.ReadLine(); //skip meta
-
+                    parser.SetDelimiters(_delimiter);
+                    //get meta
+                    var properties = parser.ReadFields();
                     var result = new List<CurrencyRate>();
                     while (!parser.EndOfData)
                     {
                         //Process row
                         string[] fields = parser.ReadFields();
-                        var item = new CurrencyRate(_toCurrency)
-                        {                            
-                            FromCurrencyCode = fields[0],
-                            ExchangeRate = Decimal.Parse(fields[1])
-                        };
+                        var item = this.GiveMeAnObject(properties, fields);                     
                         result.Add(item);
                     }
                     return result;
@@ -54,7 +50,7 @@ namespace WebApplication1.Repository
         public CurrencyRate GetRateForCurrency(string currency)
         {
             var allData = GetAll();
-            var exchangeRateForCurrency = allData.Where(x => x.FromCurrencyCode == currency).ToList();
+            var exchangeRateForCurrency = allData.Where(x => x.Currency == currency).ToList();
             if (exchangeRateForCurrency.Count > 1)
             {
                 throw new ArgumentException("Ambiguous query");

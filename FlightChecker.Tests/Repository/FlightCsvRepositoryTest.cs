@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebApplication1.Repository;
-using WebApplication1.Models;
+using FlightChecker.Repository;
+using FlightChecker.Models;
 using System.Linq;
 
 namespace FlightChecker.Tests.Repository

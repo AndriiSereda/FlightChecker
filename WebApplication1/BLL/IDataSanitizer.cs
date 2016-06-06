@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplication1.BLL
+namespace FlightChecker.BLL
 {
     interface IDataSanitizer<T>
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using WebApplication1.Models;
+using FlightChecker.Models;
 
-namespace WebApplication1.BLL
+namespace FlightChecker.BLL
 {
     public class FlightDataSanitizer : IDataSanitizer<Flight>
     {

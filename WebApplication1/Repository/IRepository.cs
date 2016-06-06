@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebApplication1.Repository
+namespace FlightChecker.Repository
 {
     public interface IRepository<T>
     {

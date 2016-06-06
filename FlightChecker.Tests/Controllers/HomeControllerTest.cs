@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebApplication1;
-using WebApplication1.Controllers;
+using FlightChecker;
+using FlightChecker.Controllers;
 
 namespace FlightChecker.Tests.Controllers
 {

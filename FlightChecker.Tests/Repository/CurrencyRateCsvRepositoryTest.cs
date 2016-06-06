@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebApplication1.Repository;
+using FlightChecker.Repository;
 using System.Linq;
 
 namespace FlightChecker.Tests.Repository
@@ -50,7 +50,7 @@ namespace FlightChecker.Tests.Repository
         {
             var repository = new CurrencyRateCsvRepository("currencies", "EUR");
             var result = repository.GetRateForCurrency("YER");
-            Assert.AreEqual(result.ExchangeRate, 287.304992675781m);
+            Assert.AreEqual(result.Rate, 287.304992675781m);
         }
 
         [TestCategory("Integration tests")]
