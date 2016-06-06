@@ -4,6 +4,6 @@ namespace FlightChecker.BLL
 {
     interface IDataSanitizer<T>
     {
-        IEnumerable<T> Sanitize(IEnumerable<T> data);
+        IEnumerable<T> SanitizeCollection(IEnumerable<T> data);
     }
 }

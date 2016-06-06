@@ -29,7 +29,6 @@ namespace FlightChecker.Repository
                     {
                         //Process row
                         var fields = parser.ReadFields();
-                        DateTime parsedDate;
                         var item = this.GiveMeAnObject(properties, fields);
                         if ((item.Origin == origin)&&(item.Destination == destination))
                         {
