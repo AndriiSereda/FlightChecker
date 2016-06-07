@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using FlightChecker.Models;
 using FlightChecker.BLL;
+using FlightChecker.Contracts;
 
 namespace FlightChecker.Tests.BLL
 {
@@ -51,6 +52,17 @@ namespace FlightChecker.Tests.BLL
 
             Assert.AreEqual(10.06m, result.MinimumPrice);
             Assert.AreEqual(82.92m, result.MaximumPrice);
+        }
+
+        [TestMethod]
+        public void CalculatorReturnsConvertedResult()
+        {
+            var input = new FlightPriceRangeContract(1m, 2.1m);
+            var dataSanitizer = new FlightDataSanitizer();
+            var dataCalculator = new FlightDataCalculator(dataSanitizer);
+            var result = dataCalculator.ConvertFlightPriceRange(input, 1.2345m);
+            Assert.AreEqual(1.23m, result.MinimumPrice);
+            Assert.AreEqual(2.59m, result.MaximumPrice);
         }
 
         private Flight[] LoadTestDataSet_WithoutOneWayFlights_1()

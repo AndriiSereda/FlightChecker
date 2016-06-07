@@ -11,6 +11,8 @@ namespace FlightChecker.BLL
     public class FlightDataCalculator
     {
         private IDataSanitizer<Flight> _dataSanitizer;
+        //let's not implemet Japanese or Croatian currency specifics
+        private const int _decimalDelimeter = 2;
 
         public FlightDataCalculator(IDataSanitizer<Flight> dataSanitizer)
         {
@@ -39,9 +41,19 @@ namespace FlightChecker.BLL
                 listOfMinimumAndMaximumPrices.Add(listOfTwoWayFlights.Last().Price);
             }
 
-            var result = new FlightPriceRangeContract(listOfMinimumAndMaximumPrices.Min(), listOfMinimumAndMaximumPrices.Max());
-
+            var minPrice = Math.Round(listOfMinimumAndMaximumPrices.Min(), _decimalDelimeter);
+            var maxPrice = Math.Round(listOfMinimumAndMaximumPrices.Max(), _decimalDelimeter);
+            var result = new FlightPriceRangeContract(minPrice,maxPrice);            
             return result;
+        }
+
+        public IPriceRange ConvertFlightPriceRange(IPriceRange range,  decimal rate)
+        {
+            var minPriceRecalculated = Math.Round(range.MinimumPrice * rate, _decimalDelimeter);
+            var maxPriceRecalculated = Math.Round(range.MaximumPrice * rate, _decimalDelimeter);
+            range.MaximumPrice = maxPriceRecalculated;
+            range.MinimumPrice = minPriceRecalculated;
+            return range;
         }
     }
 }
