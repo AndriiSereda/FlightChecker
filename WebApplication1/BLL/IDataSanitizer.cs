@@ -2,8 +2,8 @@
 
 namespace FlightChecker.BLL
 {
-    interface IDataSanitizer<T>
+    public interface IDataSanitizer<T>
     {
-        IEnumerable<T> SanitizeCollection(IEnumerable<T> data);
+        IEnumerable<T> SanitizeAndSortCollection(IEnumerable<T> data);
     }
 }

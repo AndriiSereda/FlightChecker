@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FlightChecker.Models;
 using FlightChecker.BLL;
 using System.Linq;
@@ -33,7 +32,7 @@ namespace FlightChecker.Tests.BLL
             };
 
             var dataSanitizer = new FlightDataSanitizer();
-            var result = dataSanitizer.SanitizeCollection(input);
+            var result = dataSanitizer.SanitizeAndSortCollection(input);
             
             Assert.AreEqual(result.ToList().Count, 2);
 
@@ -75,7 +74,7 @@ namespace FlightChecker.Tests.BLL
             };
 
             var dataSanitizer = new FlightDataSanitizer();
-            var result = dataSanitizer.SanitizeCollection(input);
+            var result = dataSanitizer.SanitizeAndSortCollection(input);
 
             Assert.AreEqual(0.97m, result.First().Price);
             Assert.AreEqual(1.34m, result.Last().Price);
@@ -87,12 +86,12 @@ namespace FlightChecker.Tests.BLL
             var input = LoadTestWithMaximumOutlier();
             var initialSize = input.Length;
             var dataSanitizer = new FlightDataSanitizer();
-            var result = dataSanitizer.SanitizeCollection(input);
+            var result = dataSanitizer.SanitizeAndSortCollection(input);
             Assert.AreEqual(initialSize - 1, result.Count());
 
             input = LoadTestWithMinimumOutlier();
             initialSize = input.Length;
-            result = dataSanitizer.SanitizeCollection(input);
+            result = dataSanitizer.SanitizeAndSortCollection(input);
             Assert.AreEqual(initialSize - 1, result.Count());
 
         }

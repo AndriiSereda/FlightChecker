@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using FlightChecker.Models;
+using FlightChecker.Contracts;
 
 namespace FlightChecker.BLL
 {
     public class FlightDataSanitizer : IDataSanitizer<Flight>
     {
         //lazy dictionary for precalculated coefficients
-        private readonly Dictionary<int, decimal> _precalculatedThomsonTau; 
+        private readonly Dictionary<int, decimal> _precalculatedThompsonTau;
+        //no outliers for collections less than 3
+        private const int _outlierSanityMinimumAmount = 3;
+
 
         public FlightDataSanitizer()
         {
-            _precalculatedThomsonTau = LoadThompsonTauCoefficients();
+            _precalculatedThompsonTau = LoadThompsonTauCoefficients();
         }
 
-        public IEnumerable<Flight> SanitizeCollection(IEnumerable<Flight> dataCollection)
+        public IEnumerable<Flight> SanitizeAndSortCollection(IEnumerable<Flight> dataCollection)
         {
             if (dataCollection == null || !dataCollection.Any())
             {
@@ -26,20 +30,22 @@ namespace FlightChecker.BLL
             sortedList.RemoveAll(x => x.Price <= 0);
             sortedList.Sort();                  
                      
-            var total = sortedList.Count();       
+            var total = sortedList.Count();
+
+            if (total < _outlierSanityMinimumAmount)
+            {
+                return sortedList;
+            }       
           
             decimal average = sortedList.Average(x=> x.Price);
-            decimal sumOfSquaresOfDifferences = sortedList.Select(x => (x.Price - average) * (x.Price - average)).Sum();
-            double sd = Math.Sqrt((double)sumOfSquaresOfDifferences / total);
+            decimal sumOfSquaresOfDifferences = sortedList.Select(x => (x.Price - average) * (x.Price - average)).Sum();            
+            double standardDeviation = Math.Sqrt((double)sumOfSquaresOfDifferences / total);
             decimal tau = GiveMeAThompsonTauCoefficient(total);
 
-
-            //what if discounts?
-            //sortedList.RemoveAll(x => x.Price > extremeOutlierMaxBoundary || x.Price < extremeOutlierMinBoundary);
-            sortedList.RemoveAll(x => Math.Abs(x.Price - average) > tau * (decimal)sd);
+            //for keeping crazy discounts info remove Math.Abs 
+            sortedList.RemoveAll(x => Math.Abs(x.Price - average) > tau * (decimal)standardDeviation);
             return sortedList;
-        }     
-        
+        }             
 
         #region Lazy Modified Thompson Tau
         private Dictionary<int,decimal> LoadThompsonTauCoefficients()
@@ -68,22 +74,22 @@ namespace FlightChecker.BLL
 
             if (number >= 1000)
             {
-                return _precalculatedThomsonTau[1000];
+                return _precalculatedThompsonTau[1000];
             }
 
             if (number >= 100)
             {
-                return _precalculatedThomsonTau[100];
+                return _precalculatedThompsonTau[100];
             }
 
             if (number >= 10)
             {
-                return _precalculatedThomsonTau[10];
+                return _precalculatedThompsonTau[10];
             }
 
             if (number >= 3)
             {
-                return _precalculatedThomsonTau[number];
+                return _precalculatedThompsonTau[number];
             }
 
             return 1;
