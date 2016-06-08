@@ -151,7 +151,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\" />
     <Folder Include="fonts\" />
     <Folder Include="Scripts\" />
@@ -170,7 +169,6 @@
     <Compile Include="Contracts\IPriceRange.cs" />
     <Compile Include="Controllers\FlightPriceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -192,10 +190,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\FlightCheckerChallenge.pubxml" />
-    <Content Include="Repository\csv\currencies.csv">
+    <Content Include="App_Data\currencies.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Repository\csv\prices.csv">
+    <Content Include="App_Data\prices.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Web.config" />

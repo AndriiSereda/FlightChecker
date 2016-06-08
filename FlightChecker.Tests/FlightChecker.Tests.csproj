@@ -105,7 +105,6 @@
     <Compile Include="BLL\FlightCalculatorTest.cs" />
     <Compile Include="BLL\UseCaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\ValuesControllerTest.cs" />
     <Compile Include="Repository\CsvRepositoryTest.cs" />
     <Compile Include="Repository\FlightCsvRepositoryTest.cs" />
     <Compile Include="Repository\CurrencyRateCsvRepositoryTest.cs" />
@@ -122,6 +121,9 @@
       <Project>{CD616840-259E-4324-A4D5-430B2411BFFF}</Project>
       <Name>FlightChecker</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -12,7 +12,7 @@ namespace FlightChecker.Tests
     {
         public static IPathMapper GiveMeALocalDummyPathMapper(string source)
         {
-            var localPath = String.Format(@"Repository/csv/{0}.csv", source);
+            var localPath = String.Format(@"App_Data/{0}.csv", source);
             var mock = new Mock<IPathMapper>();
             mock.Setup(m => m.MapPath(source)).Returns(localPath);
             return mock.Object;
