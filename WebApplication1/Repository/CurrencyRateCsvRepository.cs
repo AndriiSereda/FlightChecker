@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FlightChecker.Models;
+using System.IO;
 
 namespace FlightChecker.Repository
 {
@@ -23,23 +24,26 @@ namespace FlightChecker.Repository
         public CurrencyRate GetRateForCurrency(string currency)
         {
             try
-            {
-                using (TextFieldParser parser = new TextFieldParser(_source))
+            {                
+                using (var instream = new FileStream(_source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(_delimiter);
-                    //get meta
-                    var properties = parser.ReadFields();
-                    var result = new List<CurrencyRate>();
-                    while (!parser.EndOfData)
+                    using (TextFieldParser parser = new TextFieldParser(instream))
                     {
-                        //Process row
-                        string[] fields = parser.ReadFields();
-                        var item = this.GiveMeAnObject(properties, fields);                                          
-                        result.Add(item);
+                        parser.TextFieldType = FieldType.Delimited;
+                        parser.SetDelimiters(_delimiter);
+                        //get meta
+                        var properties = parser.ReadFields();
+                        var result = new List<CurrencyRate>();
+                        while (!parser.EndOfData)
+                        {
+                            //Process row
+                            string[] fields = parser.ReadFields();
+                            var item = this.GiveMeAnObject(properties, fields);
+                            result.Add(item);
+                        }
+                        return result.FirstOrDefault(x => x.Currency == currency);
                     }
-                    return result.FirstOrDefault(x => x.Currency == currency);
-                }                
+                }                     
             }
             catch (Exception)
             {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using FlightChecker.Models;
+using System.IO;
 
 namespace FlightChecker.Repository
 {
@@ -9,32 +10,36 @@ namespace FlightChecker.Repository
 
     {
         public FlightCsvRepository(string source, IPathMapper pathMapper) : base(source, pathMapper)
-        { }
+        {
+        }
 
         public IEnumerable<Flight> GetFlightsFromOriginToDestination(string origin, string destination)
         {
             try
             {
-                using (TextFieldParser parser = new TextFieldParser(_source))
+                using (var instream = new FileStream(_source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    parser.TextFieldType = FieldType.Delimited;
-                    parser.SetDelimiters(_delimiter);
-                    //get meta
-                    var properties = parser.ReadFields();
-
-                    var result = new List<Flight>();
-                    while (!parser.EndOfData)
+                    using (TextFieldParser parser = new TextFieldParser(instream))
                     {
-                        //Process row
-                        var fields = parser.ReadFields();
-                        var item = this.GiveMeAnObject(properties, fields);
-                        if ((item.Origin == origin)&&(item.Destination == destination))
+                        parser.TextFieldType = FieldType.Delimited;
+                        parser.SetDelimiters(_delimiter);
+                        //get meta
+                        var properties = parser.ReadFields();
+
+                        var result = new List<Flight>();
+                        while (!parser.EndOfData)
                         {
-                            result.Add(item);
+                            //Process row
+                            var fields = parser.ReadFields();
+                            var item = this.GiveMeAnObject(properties, fields);
+                            if ((item.Origin == origin) && (item.Destination == destination))
+                            {
+                                result.Add(item);
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
+                }                
             }
             catch (Exception)
             {
