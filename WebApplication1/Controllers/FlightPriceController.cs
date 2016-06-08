@@ -17,12 +17,13 @@ namespace FlightChecker.Controllers
         private IDataSanitizer<Flight> _dataSanitizer;
         private IPriceRangeCalculator<Flight> _priceRangeCalculator;
         private IPathMapper _pathMapper;
+        private const string _defaultCurrency = "EUR";
 
         public FlightPriceController()
         {
             _pathMapper = new ServerPathMapper();
             _flightPricesRepository = new FlightCsvRepository("prices", _pathMapper);
-            _currencyRateRepository = new CurrencyRateCsvRepository("currencies", "EUR", _pathMapper);
+            _currencyRateRepository = new CurrencyRateCsvRepository("currencies", _defaultCurrency, _pathMapper);
             _dataSanitizer = new FlightDataSanitizer();
             _priceRangeCalculator = new FlightDataCalculator(_dataSanitizer);
         }
@@ -60,11 +61,20 @@ namespace FlightChecker.Controllers
         {
             try
             {
-                var currencyRate = _currencyRateRepository.GetRateForCurrency(currency);
-                if (currencyRate == null)
+                CurrencyRate currencyRate;
+                if (currency == _defaultCurrency)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There was no matching currency found");
+                    currencyRate = new CurrencyRate { Currency = "EUR", Rate = 1 };
                 }
+                else
+                {
+                    currencyRate = _currencyRateRepository.GetRateForCurrency(currency);
+                    if (currencyRate == null)
+                    {
+                        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There was no matching currency found");
+                    }
+                }
+                
 
                 var flightsAndPrices = _flightPricesRepository.GetFlightsFromOriginToDestination(origin, destination);
                 if (!flightsAndPrices.Any())
@@ -84,11 +94,10 @@ namespace FlightChecker.Controllers
 
         }
 
-        public decimal Get(string currency)
-        {
-            return _currencyRateRepository.GetRateForCurrency(currency).Rate;
-            //var priceRange = new FlightPriceRangeContract { MinimumPrice = 1, MaximumPrice = 2.01m };
-            //var calculatedPriceRange = (FlightPriceRangeContract)_priceRangeCalculator.ConvertPriceRange(priceRange, currencyRate.Rate);
+        public string Get()
+
+        { 
+            return "Parameters: origin and destination, currency(optional)";
         }
     }
 }
