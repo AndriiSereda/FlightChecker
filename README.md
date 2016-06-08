@@ -1,5 +1,5 @@
 # FlightChecker
-Coding exercise
+Coding exercise:
 That is my approach to solve a coding exercise.
 
 The purpose is to build a REST service that would be used
