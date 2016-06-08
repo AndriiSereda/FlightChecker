@@ -165,7 +165,6 @@
     <Compile Include="BLL\IPriceRangeCalculator.cs" />
     <Compile Include="BLL\IDataSanitizer.cs" />
     <Compile Include="Contracts\FlightPriceRangeContract.cs" />
-    <Compile Include="Contracts\FlightTypeEnum.cs" />
     <Compile Include="Contracts\IPriceRange.cs" />
     <Compile Include="Controllers\FlightPriceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

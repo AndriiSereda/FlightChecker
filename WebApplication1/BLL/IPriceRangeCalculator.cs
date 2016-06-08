@@ -1,5 +1,4 @@
 ﻿using FlightChecker.Contracts;
-using FlightChecker.Models;
 using System.Collections.Generic;
 
 namespace FlightChecker.BLL

@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FlightChecker.Repository;
-using System.Linq;
-using Moq;
 
 namespace FlightChecker.Tests.Repository
 {

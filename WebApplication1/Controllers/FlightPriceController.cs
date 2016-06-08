@@ -64,7 +64,7 @@ namespace FlightChecker.Controllers
                 CurrencyRate currencyRate;
                 if (currency == _defaultCurrency)
                 {
-                    currencyRate = new CurrencyRate { Currency = "EUR", Rate = 1 };
+                    currencyRate = new CurrencyRate { Currency = _defaultCurrency, Rate = 1 };
                 }
                 else
                 {

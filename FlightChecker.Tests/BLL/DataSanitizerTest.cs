@@ -13,29 +13,15 @@ namespace FlightChecker.Tests.BLL
         {
             var input = new Flight[]
             {
-                new Flight
-                {
-                    Price = 1
-                },
-                new Flight
-                {
-                    Price = 1
-                },
-                  new Flight
-                {
-                    Price = 0
-                }                  ,
-                  new Flight
-                {
-                    Price = -1
-                }
+                new Flight { Price = 1 },
+                new Flight { Price = 1 },
+                new Flight { Price = 0 },
+                new Flight { Price = -1}
             };
 
             var dataSanitizer = new FlightDataSanitizer();
-            var result = dataSanitizer.SanitizeAndSortCollection(input);
-            
+            var result = dataSanitizer.SanitizeAndSortCollection(input);            
             Assert.AreEqual(result.ToList().Count, 2);
-
         }
 
         [TestMethod]

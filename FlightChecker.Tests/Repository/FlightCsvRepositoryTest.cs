@@ -1,9 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FlightChecker.Repository;
-using FlightChecker.Models;
 using System.Linq;
-using Moq;
 
 namespace FlightChecker.Tests.Repository
 {
