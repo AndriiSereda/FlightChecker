@@ -180,7 +180,6 @@
     <Compile Include="Repository\ICurrencyRateRepository.cs" />
     <Compile Include="Repository\IFlightRepository.cs" />
     <Compile Include="Repository\IPathMapper.cs" />
-    <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Repository\CsvRepository.cs" />
     <Compile Include="Repository\ServerPathMapper.cs" />
   </ItemGroup>

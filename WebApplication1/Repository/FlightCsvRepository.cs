@@ -5,7 +5,7 @@ using FlightChecker.Models;
 
 namespace FlightChecker.Repository
 {
-    public class FlightCsvRepository : CsvRepository<Flight>, IRepository<Flight>, IFlightPricesRepository
+    public class FlightCsvRepository : CsvRepository<Flight>, IFlightPricesRepository
 
     {
         public FlightCsvRepository(string source, IPathMapper pathMapper) : base(source, pathMapper)
@@ -41,12 +41,6 @@ namespace FlightChecker.Repository
                 throw;
             }
         }
-
-        IEnumerable<Flight> IRepository<Flight>.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-       
+                       
     }
 }

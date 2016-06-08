@@ -36,15 +36,7 @@ namespace FlightChecker.Tests.Repository
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
-        [TestCategory("Integration tests")]
-        public void ReadAllCurrencyRateDataReturnsAllData()
-        {
-            var repository = new CurrencyRateCsvRepository("currencies", "EUR", TestSetup.GiveMeALocalDummyPathMapper("currencies"));
-            var result = repository.GetAll().ToList();
-            Assert.AreEqual(result.Count, 10);
-        }
-
+        
         [TestCategory("Integration tests")]
         [TestMethod]
         public void GetRateForCurrencyRateReturnsOneCurrencyRate()

@@ -6,7 +6,7 @@ using FlightChecker.Models;
 
 namespace FlightChecker.Repository
 {
-    public class CurrencyRateCsvRepository : CsvRepository<CurrencyRate>, IRepository<CurrencyRate>, ICurrencyRateRepository
+    public class CurrencyRateCsvRepository : CsvRepository<CurrencyRate>, ICurrencyRateRepository
     {
         private string _toCurrency;
 
@@ -20,7 +20,7 @@ namespace FlightChecker.Repository
 
         }
 
-        public IEnumerable<CurrencyRate> GetAll()
+        public CurrencyRate GetRateForCurrency(string currency)
         {
             try
             {
@@ -35,10 +35,10 @@ namespace FlightChecker.Repository
                     {
                         //Process row
                         string[] fields = parser.ReadFields();
-                        var item = this.GiveMeAnObject(properties, fields);                     
+                        var item = this.GiveMeAnObject(properties, fields);                                          
                         result.Add(item);
                     }
-                    return result;
+                    return result.FirstOrDefault(x => x.Currency == currency);
                 }                
             }
             catch (Exception)
@@ -46,18 +46,5 @@ namespace FlightChecker.Repository
                 throw;
             }
         }
-
-        public CurrencyRate GetRateForCurrency(string currency)
-        {
-            var allData = GetAll();
-            var exchangeRateForCurrency = allData.Where(x => x.Currency == currency).ToList();
-            if (exchangeRateForCurrency.Count > 1)
-            {
-                throw new ArgumentException("Ambiguous query");
-            }
-            return exchangeRateForCurrency.FirstOrDefault();
-        }
-
-
     }
 }
