@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using FlightChecker.Models;
-using FlightChecker.Contracts;
 
 namespace FlightChecker.BLL
 {
@@ -12,6 +11,7 @@ namespace FlightChecker.BLL
         private readonly Dictionary<int, decimal> _precalculatedThompsonTau;
         //no outliers for collections less than 3
         private const int _outlierSanityMinimumAmount = 3;
+        private const int _iterationTime = 2;
 
 
         public FlightDataSanitizer()
@@ -35,15 +35,22 @@ namespace FlightChecker.BLL
             if (total < _outlierSanityMinimumAmount)
             {
                 return sortedList;
-            }       
-          
-            decimal average = sortedList.Average(x=> x.Price);
-            decimal sumOfSquaresOfDifferences = sortedList.Select(x => (x.Price - average) * (x.Price - average)).Sum();            
-            double standardDeviation = Math.Sqrt((double)sumOfSquaresOfDifferences / total);
-            decimal tau = GiveMeAThompsonTauCoefficient(total);
+            }
 
-            //for keeping crazy discounts info remove Math.Abs 
-            sortedList.RemoveAll(x => Math.Abs(x.Price - average) > tau * (decimal)standardDeviation);
+            //to increase precision increase iteration
+            for (int i = 0; i < _iterationTime; i++)
+            {                
+                decimal average = sortedList.Average(x => x.Price);
+                decimal sumOfSquaresOfDifferences = sortedList.Select(x => (x.Price - average) * (x.Price - average)).Sum();
+                double standardDeviation = Math.Sqrt((double)sumOfSquaresOfDifferences / total);
+                decimal tau = GiveMeAThompsonTauCoefficient(total);
+                //for keeping crazy discounts info remove Math.Abs 
+                sortedList.RemoveAll(x => Math.Abs(x.Price - average) > tau * (decimal)standardDeviation);
+                total = sortedList.Count();
+            }
+           
+
+            
             return sortedList;
         }             
 

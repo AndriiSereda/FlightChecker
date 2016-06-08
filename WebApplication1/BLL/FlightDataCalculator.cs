@@ -1,14 +1,12 @@
-﻿using FlightChecker.BLL;
-using FlightChecker.Contracts;
+﻿using FlightChecker.Contracts;
 using FlightChecker.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace FlightChecker.BLL
 {
-    public class FlightDataCalculator
+    public class FlightDataCalculator : IPriceRangeCalculator<Flight>
     {
         private IDataSanitizer<Flight> _dataSanitizer;
         //let's not implemet Japanese or Croatian currency specifics
@@ -17,10 +15,9 @@ namespace FlightChecker.BLL
         public FlightDataCalculator(IDataSanitizer<Flight> dataSanitizer)
         {
             _dataSanitizer = dataSanitizer;
-
         }
 
-        public IPriceRange CalculateFlightPriceRange(IEnumerable<Flight> collection)
+        public IPriceRange CalculatePriceRange(IEnumerable<Flight> collection)
         {
             var listOfOneWayFlights = collection.Where(x => !x.Inbound.HasValue);
             var listOfTwoWayFlights = collection.Where(x => x.Inbound.HasValue);
@@ -30,15 +27,19 @@ namespace FlightChecker.BLL
             if (listOfOneWayFlights.Any())
             {
                 listOfOneWayFlights = _dataSanitizer.SanitizeAndSortCollection(listOfOneWayFlights);
-                listOfMinimumAndMaximumPrices.Add(listOfOneWayFlights.First().Price);
-                listOfMinimumAndMaximumPrices.Add(listOfOneWayFlights.Last().Price);
+                decimal price1 = listOfOneWayFlights.First().Price;
+                decimal price2 = listOfOneWayFlights.Last().Price;
+                listOfMinimumAndMaximumPrices.Add(price1);
+                listOfMinimumAndMaximumPrices.Add(price2);
             }
 
             if (listOfTwoWayFlights.Any())
             {
                 listOfTwoWayFlights = _dataSanitizer.SanitizeAndSortCollection(listOfTwoWayFlights);
-                listOfMinimumAndMaximumPrices.Add(listOfTwoWayFlights.First().Price);
-                listOfMinimumAndMaximumPrices.Add(listOfTwoWayFlights.Last().Price);
+                decimal price3 = listOfTwoWayFlights.First().Price;
+                decimal price4 = listOfTwoWayFlights.Last().Price;
+                listOfMinimumAndMaximumPrices.Add(price3);
+                listOfMinimumAndMaximumPrices.Add(price4);
             }
 
             var minPrice = Math.Round(listOfMinimumAndMaximumPrices.Min(), _decimalDelimeter);
@@ -47,7 +48,7 @@ namespace FlightChecker.BLL
             return result;
         }
 
-        public IPriceRange ConvertFlightPriceRange(IPriceRange range,  decimal rate)
+        public IPriceRange ConvertPriceRange(IPriceRange range,  decimal rate)
         {
             var minPriceRecalculated = Math.Round(range.MinimumPrice * rate, _decimalDelimeter);
             var maxPriceRecalculated = Math.Round(range.MaximumPrice * rate, _decimalDelimeter);

@@ -43,34 +43,16 @@ namespace FlightChecker.Tests.BLL
         {
             var input = new Flight[]
             {
-                new Flight
-                {
-                    Price = 1
-                },
-                new Flight
-                {
-                    Price = 1
-                },
-                  new Flight
-                {
-                    Price = 0
-                },
-                  new Flight
-                {
-                    Price = 1.54m
-                },
-                  new Flight
-                {
-                    Price = 1.34m
-                },
-                   new Flight
-                {
-                    Price = 0.97m
-                },
-                  new Flight
-                {
-                    Price = 1.01m
-                }
+                new Flight { Price = 1 },
+                new Flight { Price = 1 },
+                new Flight { Price = 0 },
+                //outlier for a small dataset
+                new Flight { Price = 1.54m },
+                new Flight { Price = 1.34m },
+                new Flight { Price = 1.34m },
+                new Flight { Price = 1.24m },
+                new Flight { Price = 0.97m },
+                new Flight { Price = 1.01m }
             };
 
             var dataSanitizer = new FlightDataSanitizer();
@@ -81,54 +63,36 @@ namespace FlightChecker.Tests.BLL
 
         }
         [TestMethod]
-        public void SanitizeRemovesOutliers()
+        public void SanitizeRemovesOutliers_1()
         {
             var input = LoadTestWithMaximumOutlier();
-            var initialSize = input.Length;
             var dataSanitizer = new FlightDataSanitizer();
             var result = dataSanitizer.SanitizeAndSortCollection(input);
-            Assert.AreEqual(initialSize - 1, result.Count());
+            Assert.AreEqual(result.Count(), 5);          
+        }
 
-            input = LoadTestWithMinimumOutlier();
-            initialSize = input.Length;
-            result = dataSanitizer.SanitizeAndSortCollection(input);
-            Assert.AreEqual(initialSize - 1, result.Count());
-
+        [TestMethod]
+        public void SanitizeRemovesOutliers_2()
+        {
+           var input = LoadTestWithMinimumOutlier();
+           var dataSanitizer = new FlightDataSanitizer();
+           var result = dataSanitizer.SanitizeAndSortCollection(input);
+           Assert.AreEqual(result.Count(), 5);
         }
 
         private Flight[] LoadTestWithMaximumOutlier()
         {
             var input = new Flight[]
             {
-                new Flight
-                {
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    Price = 62.46m
-                },                  
-                  new Flight
-                {
-                    Price = 72.92m
-                },
-                   new Flight
-                {
-                    Price = 70.25m
-                },
-                   new Flight
-                {
-                    Price = 70.5m
-                },
-
-                   new Flight
-                {
-                    Price = 70.35m
-                },
-                  new Flight
-                {
-                    Price = 310m
-                }
+                new Flight{ Price = 65.06m },
+                //outlier 2nd gen
+                new Flight{ Price = 62.46m },                  
+                new Flight{ Price = 72.92m },
+                new Flight{ Price = 70.25m },
+                new Flight{ Price = 70.5m },
+                new Flight{ Price = 70.35m },
+                //outlier first gen
+                new Flight{ Price = 310m }
             };
             return input;
         }
@@ -137,34 +101,15 @@ namespace FlightChecker.Tests.BLL
         {
             var input = new Flight[]
             {
-                new Flight
-                {
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    Price = 62.46m
-                },
-                new Flight
-                {
-                    Price = 72.92m
-                },
-                   new Flight
-                {
-                    Price = 70.25m
-                },
-                    new Flight
-                {
-                    Price = 70.5m
-                },
-                    new Flight
-                {
-                    Price = 70.2m
-                },
-                  new Flight
-                {
-                    Price = 1m
-                }
+                new Flight { Price = 65.06m },
+                //outlier 2nd gen
+                new Flight { Price = 62.46m },
+                new Flight { Price = 72.92m },
+                new Flight { Price = 70.25m },
+                new Flight { Price = 70.5m },
+                new Flight{ Price = 70.2m },
+                //outlier
+                new Flight{ Price = 1m }
             };
             return input;
         }

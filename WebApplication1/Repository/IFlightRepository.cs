@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FlightChecker.Models;
 
 namespace FlightChecker.Repository
 {
-    interface IFlightRepository
+    public interface IFlightPricesRepository
     {
         IEnumerable<Flight> GetFlightsFromOriginToDestination(string origin, string destination);
     }

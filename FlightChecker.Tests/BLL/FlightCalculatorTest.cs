@@ -18,9 +18,9 @@ namespace FlightChecker.Tests.BLL
             var dataSanitizer = new FlightDataSanitizer();
             var dataCalculator = new FlightDataCalculator(dataSanitizer);
 
-            var result = dataCalculator.CalculateFlightPriceRange(input);
+            var result = dataCalculator.CalculatePriceRange(input);
 
-            Assert.AreEqual(210m, result.MaximumPrice);
+            Assert.AreEqual(72.92m, result.MaximumPrice);
             Assert.AreEqual(62.46m, result.MinimumPrice);
 
         }
@@ -33,10 +33,10 @@ namespace FlightChecker.Tests.BLL
             var dataSanitizer = new FlightDataSanitizer();
             var dataCalculator = new FlightDataCalculator(dataSanitizer);
 
-            var result = dataCalculator.CalculateFlightPriceRange(input);
+            var result = dataCalculator.CalculatePriceRange(input);
 
-            Assert.AreEqual(84.92m, result.MaximumPrice);
-            Assert.AreEqual(50.5m, result.MinimumPrice);
+            Assert.AreEqual(74.5m, result.MaximumPrice);
+            Assert.AreEqual(60.5m, result.MinimumPrice);
 
         }
 
@@ -48,9 +48,9 @@ namespace FlightChecker.Tests.BLL
             var dataSanitizer = new FlightDataSanitizer();
             var dataCalculator = new FlightDataCalculator(dataSanitizer);
 
-            var result = dataCalculator.CalculateFlightPriceRange(input);
+            var result = dataCalculator.CalculatePriceRange(input);
 
-            Assert.AreEqual(10.06m, result.MinimumPrice);
+            Assert.AreEqual(10.26m, result.MinimumPrice);
             Assert.AreEqual(82.92m, result.MaximumPrice);
         }
 
@@ -60,7 +60,7 @@ namespace FlightChecker.Tests.BLL
             var input = new FlightPriceRangeContract(1m, 2.1m);
             var dataSanitizer = new FlightDataSanitizer();
             var dataCalculator = new FlightDataCalculator(dataSanitizer);
-            var result = dataCalculator.ConvertFlightPriceRange(input, 1.2345m);
+            var result = dataCalculator.ConvertPriceRange(input, 1.2345m);
             Assert.AreEqual(1.23m, result.MinimumPrice);
             Assert.AreEqual(2.59m, result.MaximumPrice);
         }
@@ -69,50 +69,18 @@ namespace FlightChecker.Tests.BLL
         {
             var input = new Flight[]
             {
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    //min
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 62.46m
-                },                  
-                  new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 72.92m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.25m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.5m
-                },
-
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.35m
-                },
-                  new Flight
-                {
-                    //outlier
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 310m
-                },
-                  new Flight
-                {
-                    //max
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 210m
-                }
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 65.06m },
+                //min
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 62.46m },  
+                //max                
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 72.92m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 70.25m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 70.5m  },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 70.35m },
+                //outlier
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 310m   },
+                //outlier 2nd gen
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 210m   }
             };
             return input;
         }
@@ -120,195 +88,56 @@ namespace FlightChecker.Tests.BLL
         private IEnumerable<Flight> LoadTestDataSet_WithoutOneWayFlights_2()
         {
             var input = new Flight[]
-                       {
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.15m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 62.46m
-                },
-                  new Flight
-                {
-                    //max
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 84.92m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.25m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.15m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 62.46m
-                },
-                  new Flight
-                {
-                    //max
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 84.92m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.25m
-                },
-                   new Flight
-                {
-                    //min
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 50.5m
-                },
-                   new Flight
-                {
-                    
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 60.5m
-                },
-
-                   new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.5m
-                },
-                   new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 74.5m
-                },
-                    new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 60.5m
-                },
-
-                   new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.5m
-                },
-                   new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 74.5m
-                },
-                   new Flight
-                {
-
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 72.5m
-                },
-
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.35m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.45m
-                },
-                  new Flight
-                {
-                    //outlier
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 230m
-                },
-                  new Flight
-                {
-                    //outlier
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 1m
-                }
-                       };
+            {
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 65.06m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 73.15m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 62.46m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 84.92m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 70.25m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 65.06m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 73.15m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 62.46m },
+                //outlier
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 84.92m },
+                new Flight { Inbound = new DateTime(2010, 1, 1), Price = 70.25m },
+                //outlier
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 50.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 60.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 73.5m },
+                //max
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 74.5m },
+                //min
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 60.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 73.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 74.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 72.5m },
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 70.35m },
+                new Flight{Inbound = new DateTime(2010, 1, 1),Price = 73.45m },
+                //outlier
+                new Flight{Inbound = new DateTime(2010, 1, 1),Price = 230m },
+                //outlier
+                new Flight{Inbound = new DateTime(2010, 1, 1),Price = 1m }
+            };
             return input;
         }
 
         private IEnumerable<Flight> LoadTestDataSet_WithOneWayFlights_1()
         {
             var input = new Flight[]   {
-                new Flight
-                {
-                    Inbound = null,
-                    Price = 10.06m
-                },
-                 new Flight
-                {
-                    Inbound = null,
-                    Price = 11.06m
-                },
-                  new Flight
-                {
-                    Inbound = null,
-                    Price = 12.06m
-                },
-                   new Flight
-                {
-                    Inbound = null,
-                    Price = 11.06m
-                },
-                new Flight
-                {
-                    Inbound = null,
-                    Price = 80.06m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.15m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 82.46m
-                },
-                  new Flight
-                {
-                    //max
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 82.92m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 70.25m
-                },
-                   new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 65.06m
-                },
-                new Flight
-                {
-                    Inbound = new DateTime(2010, 1, 1),
-                    Price = 73.15m
-                } };
+                //min
+                new Flight {Inbound = null, Price = 10.26m},
+                new Flight {Inbound = null, Price = 11.06m},
+                new Flight {Inbound = null, Price = 12.06m},
+                new Flight {Inbound = null, Price = 11.06m},
+                new Flight {Inbound = null, Price = 80.06m},
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 73.15m},
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 82.46m},
+                //max
+                new Flight {Inbound = new DateTime(2010, 1, 1),Price = 82.92m},
+                new Flight {Inbound = new DateTime(2010, 1, 1),Price = 70.25m},
+                new Flight { Inbound = new DateTime(2010, 1, 1),Price = 65.06m},
+                new Flight {Inbound = new DateTime(2010, 1, 1), Price = 73.15m}
+            };
 
             return input;
 

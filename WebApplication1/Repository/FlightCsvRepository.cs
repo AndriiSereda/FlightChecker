@@ -1,13 +1,11 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using FlightChecker.Models;
 
 namespace FlightChecker.Repository
 {
-    public class FlightCsvRepository : CsvRepository<Flight>, IRepository<Flight>, IFlightRepository
+    public class FlightCsvRepository : CsvRepository<Flight>, IRepository<Flight>, IFlightPricesRepository
 
     {
         public FlightCsvRepository(string source) : base(source)

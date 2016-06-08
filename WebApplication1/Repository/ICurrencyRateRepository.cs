@@ -2,7 +2,7 @@
 
 namespace FlightChecker.Repository
 {
-    interface ICurrencyRateRepository
+    public interface ICurrencyRateRepository
     {
         CurrencyRate GetRateForCurrency(string currency);
     }

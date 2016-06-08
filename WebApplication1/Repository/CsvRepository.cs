@@ -13,6 +13,10 @@ namespace FlightChecker.Repository
         public CsvRepository(string source)
         {
             _source = String.Format(@"Repository/csv/{0}.csv", source);
+            var _sourcePart = String.Format("~\\Repository\\csv\\{0}.csv", source);
+
+            //_source = System.Web.HttpContext.Current.Request.MapPath(_sourcePart);
+
             if (!File.Exists(_source))
             {
                 throw new ArgumentException(String.Format("The requested repository {0} doesn't exist", source));

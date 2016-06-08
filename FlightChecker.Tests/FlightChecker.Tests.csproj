@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="BLL\DataSanitizerTest.cs" />
     <Compile Include="BLL\FlightCalculatorTest.cs" />
+    <Compile Include="BLL\UseCaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
     <Compile Include="Repository\CsvRepositoryTest.cs" />
