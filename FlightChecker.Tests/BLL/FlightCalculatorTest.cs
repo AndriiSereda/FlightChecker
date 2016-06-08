@@ -57,7 +57,7 @@ namespace FlightChecker.Tests.BLL
         [TestMethod]
         public void CalculatorReturnsConvertedResult()
         {
-            var input = new FlightPriceRangeContract(1m, 2.1m);
+            var input = new FlightPriceRangeContract { MinimumPrice = 1m, MaximumPrice = 2.1m };
             var dataSanitizer = new FlightDataSanitizer();
             var dataCalculator = new FlightDataCalculator(dataSanitizer);
             var result = dataCalculator.ConvertPriceRange(input, 1.2345m);

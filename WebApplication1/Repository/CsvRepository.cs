@@ -8,14 +8,12 @@ namespace FlightChecker.Repository
         internal string _source;
         internal const string _delimiter = ";";
         internal readonly Type[] _supportedTypes = { typeof(String), typeof(Decimal), typeof(DateTime), typeof(DateTime?) };
+        IPathMapper _pathMapper;
 
-
-        public CsvRepository(string source)
+        public CsvRepository(string source, IPathMapper pathMapper)
         {
-            _source = String.Format(@"Repository/csv/{0}.csv", source);
-            var _sourcePart = String.Format("~\\Repository\\csv\\{0}.csv", source);
-
-            //_source = System.Web.HttpContext.Current.Request.MapPath(_sourcePart);
+            //_source = String.Format(@"Repository/csv/{0}.csv", source);
+            _source = pathMapper.MapPath(source); 
 
             if (!File.Exists(_source))
             {

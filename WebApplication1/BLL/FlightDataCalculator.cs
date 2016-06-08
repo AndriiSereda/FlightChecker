@@ -44,7 +44,7 @@ namespace FlightChecker.BLL
 
             var minPrice = Math.Round(listOfMinimumAndMaximumPrices.Min(), _decimalDelimeter);
             var maxPrice = Math.Round(listOfMinimumAndMaximumPrices.Max(), _decimalDelimeter);
-            var result = new FlightPriceRangeContract(minPrice,maxPrice);            
+            var result = new FlightPriceRangeContract { MinimumPrice = minPrice, MaximumPrice = maxPrice };            
             return result;
         }
 

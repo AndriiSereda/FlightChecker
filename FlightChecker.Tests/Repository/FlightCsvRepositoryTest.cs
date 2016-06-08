@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FlightChecker.Repository;
 using FlightChecker.Models;
 using System.Linq;
+using Moq;
 
 namespace FlightChecker.Tests.Repository
 {
@@ -13,7 +14,7 @@ namespace FlightChecker.Tests.Repository
         [TestMethod]
         public void FlightRepositoryIsFound()
         {
-            var repository = new FlightCsvRepository("prices");
+            var repository = new FlightCsvRepository("prices", TestSetup.GiveMeALocalDummyPathMapper("prices"));
             //ArgumentException will prevent otherwise
             Assert.IsTrue(true);
         }
@@ -22,7 +23,7 @@ namespace FlightChecker.Tests.Repository
         [TestMethod]
         public void NoRepositoryFoundThrowsException()
         {
-            var repository = new FlightCsvRepository("foo");
+            var repository = new FlightCsvRepository("foo", TestSetup.GiveMeALocalDummyPathMapper("foo"));
         }
 
 
@@ -30,10 +31,12 @@ namespace FlightChecker.Tests.Repository
         public void FlightRepositoryReturnsProperAmountOfFlights()
         {
             int lon2berAmountOfFlights = 2645;
-            var repository = new FlightCsvRepository("prices");
+            var repository = new FlightCsvRepository("prices", TestSetup.GiveMeALocalDummyPathMapper("prices"));
             var lon2berFlights = repository.GetFlightsFromOriginToDestination("LON", "BER");
             Assert.AreEqual(lon2berAmountOfFlights, lon2berFlights.Count());
         }
+
+       
 
     }   
 }

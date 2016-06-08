@@ -8,7 +8,7 @@ namespace FlightChecker.Repository
     public class FlightCsvRepository : CsvRepository<Flight>, IRepository<Flight>, IFlightPricesRepository
 
     {
-        public FlightCsvRepository(string source) : base(source)
+        public FlightCsvRepository(string source, IPathMapper pathMapper) : base(source, pathMapper)
         { }
 
         public IEnumerable<Flight> GetFlightsFromOriginToDestination(string origin, string destination)

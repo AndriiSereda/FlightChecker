@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using FlightChecker.Repository;
+using Moq;
 
 namespace FlightChecker.Tests.Repository
 {
@@ -10,7 +11,7 @@ namespace FlightChecker.Tests.Repository
         [TestMethod]
         public void CheckCsvSupportedTypes()
         {
-            var rateRepository = new CurrencyRateCsvRepository("currencies","EUR");
+            var rateRepository = new CurrencyRateCsvRepository("currencies","EUR", TestSetup.GiveMeALocalDummyPathMapper("currencies"));
             //supported types
             Assert.AreEqual(true, rateRepository.IsTypeSupportedByRepository(typeof(Decimal)));
             Assert.AreEqual(true, rateRepository.IsTypeSupportedByRepository(typeof(DateTime)));
@@ -24,7 +25,7 @@ namespace FlightChecker.Tests.Repository
         [ExpectedException(typeof(NotImplementedException))]
         public void MismatchBetweenTypePropertiesAndCsvPropertiesThrowsError()
         {
-            var rateRepository = new CurrencyRateCsvRepository("currencies", "EUR");
+            var rateRepository = new CurrencyRateCsvRepository("currencies", "EUR", TestSetup.GiveMeALocalDummyPathMapper("currencies"));
 
             var properties = new string[] { "Rate", "Currency" };
             var values = new string[] {"3,234", "DKK"};
@@ -39,6 +40,8 @@ namespace FlightChecker.Tests.Repository
             //should be caught by exception
             Assert.AreEqual(true, false);
         }
+
+ 
 
     }
 }

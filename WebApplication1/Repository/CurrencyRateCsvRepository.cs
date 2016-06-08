@@ -10,7 +10,7 @@ namespace FlightChecker.Repository
     {
         private string _toCurrency;
 
-        public CurrencyRateCsvRepository (string source, string toCurrency) : base(source)
+        public CurrencyRateCsvRepository (string source, string toCurrency, IPathMapper pathMapper) : base(source, pathMapper)
         {
             if (toCurrency != "EUR")
             {

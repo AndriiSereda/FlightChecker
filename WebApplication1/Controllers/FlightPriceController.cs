@@ -16,18 +16,21 @@ namespace FlightChecker.Controllers
         private ICurrencyRateRepository _currencyRateRepository;
         private IDataSanitizer<Flight> _dataSanitizer;
         private IPriceRangeCalculator<Flight> _priceRangeCalculator;
+        private IPathMapper _pathMapper;
 
         public FlightPriceController()
         {
-            _flightPricesRepository = new FlightCsvRepository("prices");
-            _currencyRateRepository = new CurrencyRateCsvRepository("currencies", "EUR");
+            _pathMapper = new ServerPathMapper();
+            _flightPricesRepository = new FlightCsvRepository("prices", _pathMapper);
+            _currencyRateRepository = new CurrencyRateCsvRepository("currencies", "EUR", _pathMapper);
             _dataSanitizer = new FlightDataSanitizer();
             _priceRangeCalculator = new FlightDataCalculator(_dataSanitizer);
         }
 
-        public FlightPriceController(IFlightPricesRepository flightPricesRepository, ICurrencyRateRepository currencyRateRepository,
+        public FlightPriceController(IPathMapper pathmapper, IFlightPricesRepository flightPricesRepository, ICurrencyRateRepository currencyRateRepository,
                                      IDataSanitizer<Flight> dataSanitizer, IPriceRangeCalculator<Flight> priceRangeCalculator)
         {
+            _pathMapper = pathmapper;
             _flightPricesRepository = flightPricesRepository;
             _currencyRateRepository = currencyRateRepository;
             _dataSanitizer = dataSanitizer;
