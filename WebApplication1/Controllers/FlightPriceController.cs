@@ -72,7 +72,7 @@ namespace FlightChecker.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There were no matching flights found");
                 }
 
-                var priceRange = _priceRangeCalculator.CalculatePriceRange(flightsAndPrices);
+                var priceRange =  _priceRangeCalculator.CalculatePriceRange(flightsAndPrices);
                 var calculatedPriceRange = (FlightPriceRangeContract) _priceRangeCalculator.ConvertPriceRange(priceRange, currencyRate.Rate);
 
                 return Request.CreateResponse<FlightPriceRangeContract>(HttpStatusCode.OK, calculatedPriceRange);
@@ -82,6 +82,13 @@ namespace FlightChecker.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error at processing your request");
             }
 
+        }
+
+        public decimal Get(string currency)
+        {
+            return _currencyRateRepository.GetRateForCurrency(currency).Rate;
+            //var priceRange = new FlightPriceRangeContract { MinimumPrice = 1, MaximumPrice = 2.01m };
+            //var calculatedPriceRange = (FlightPriceRangeContract)_priceRangeCalculator.ConvertPriceRange(priceRange, currencyRate.Rate);
         }
     }
 }

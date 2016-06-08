@@ -190,7 +190,7 @@
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\FlightCheckerChallenge.pubxml" />
     <Content Include="App_Data\currencies.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\prices.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

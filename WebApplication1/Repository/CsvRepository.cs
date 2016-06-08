@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 
 namespace FlightChecker.Repository
@@ -7,13 +8,15 @@ namespace FlightChecker.Repository
     {
         internal string _source;
         internal const string _delimiter = ";";
+        internal CultureInfo _cultureUsed;
         internal readonly Type[] _supportedTypes = { typeof(String), typeof(Decimal), typeof(DateTime), typeof(DateTime?) };
         IPathMapper _pathMapper;
 
         public CsvRepository(string source, IPathMapper pathMapper)
         {
             //_source = String.Format(@"Repository/csv/{0}.csv", source);
-            _source = pathMapper.MapPath(source); 
+            _source = pathMapper.MapPath(source);
+            _cultureUsed = new CultureInfo("da-DK");
 
             if (!File.Exists(_source))
             {
@@ -48,7 +51,7 @@ namespace FlightChecker.Repository
 
                     if (property.PropertyType == typeof(Decimal))
                     {
-                        var value = Decimal.Parse(values[i]);
+                        var value = Decimal.Parse(values[i], _cultureUsed);
                         property.SetValue(instance, value);
                     }
 
