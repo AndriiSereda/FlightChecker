@@ -47,19 +47,41 @@ namespace FlightChecker.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There were no matching flights found");
                 }
 
-                var priceRange = _priceRangeCalculator.CalculatePriceRange(flightsAndPrices);
-                return Request.CreateResponse<IPriceRange>(HttpStatusCode.OK, priceRange);
-
+                var priceRange = (FlightPriceRangeContract)_priceRangeCalculator.CalculatePriceRange(flightsAndPrices);
+                return Request.CreateResponse<FlightPriceRangeContract>(HttpStatusCode.OK, priceRange);
             }
             catch (Exception)
             {
-
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error at processing your request");
             }  
         }
 
+        public HttpResponseMessage Get(string origin, string destination, string currency)
+        {
+            try
+            {
+                var currencyRate = _currencyRateRepository.GetRateForCurrency(currency);
+                if (currencyRate == null)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There was no matching currency found");
+                }
 
-       
+                var flightsAndPrices = _flightPricesRepository.GetFlightsFromOriginToDestination(origin, destination);
+                if (!flightsAndPrices.Any())
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "There were no matching flights found");
+                }
 
+                var priceRange = _priceRangeCalculator.CalculatePriceRange(flightsAndPrices);
+                var calculatedPriceRange = (FlightPriceRangeContract) _priceRangeCalculator.ConvertPriceRange(priceRange, currencyRate.Rate);
+
+                return Request.CreateResponse<FlightPriceRangeContract>(HttpStatusCode.OK, calculatedPriceRange);
+            }
+            catch (Exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error at processing your request");
+            }
+
+        }
     }
 }
