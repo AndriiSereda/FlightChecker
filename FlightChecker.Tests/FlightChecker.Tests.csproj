@@ -117,7 +117,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebApplication1\FlightChecker.csproj">
+    <ProjectReference Include="..\FlightChecker\FlightChecker.csproj">
       <Project>{CD616840-259E-4324-A4D5-430B2411BFFF}</Project>
       <Name>FlightChecker</Name>
     </ProjectReference>
