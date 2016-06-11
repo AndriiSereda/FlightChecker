@@ -42,6 +42,8 @@ namespace FlightChecker.Controllers
         {
             try
             {
+                origin = origin.ToUpper();
+                destination = destination.ToUpper();
                 var flightsAndPrices = _flightPricesRepository.GetFlightsFromOriginToDestination(origin, destination);
                 if (!flightsAndPrices.Any())
                 {
@@ -61,6 +63,9 @@ namespace FlightChecker.Controllers
         {
             try
             {
+                origin = origin.ToUpper();
+                destination = destination.ToUpper();
+                currency = currency.ToUpper();
                 CurrencyRate currencyRate;
                 if (currency == _defaultCurrency)
                 {
